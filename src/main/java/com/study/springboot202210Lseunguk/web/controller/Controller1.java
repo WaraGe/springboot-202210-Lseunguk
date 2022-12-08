@@ -1,6 +1,7 @@
 package com.study.springboot202210Lseunguk.web.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -19,5 +20,6 @@ public class Controller1 {
     public String page2() {
         return "page2";
 //      html 파일의 이름만 return 해주면 됨
+
     }
 }
