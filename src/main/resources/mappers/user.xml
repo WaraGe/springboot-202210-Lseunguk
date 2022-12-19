@@ -3,7 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.study.springboot202210Lseunguk.repository.UserRepository">
-    <insert id="saveUser" parameterType="com.study.springboot202210Lseunguk.web.dto.UserDto"> //메소드명
+    <insert id="saveUser" parameterType="com.study.springboot202210Lseunguk.web.dto.UserDto"
+    useGeneratedKeys="true" keyProperty="userId">
         insert into user_mst
         value(0, #{username}, #{password}, #{name}, #{email})
     </insert>
