@@ -11,7 +11,7 @@ import java.net.URI;
 
 @RestController
 //일반 컨트롤러는 html 응답할때
-//restcontroller 데이터만 응답할때
+//@Restcontroller 데이터만 응답할때
 @RequestMapping("/api/db/test")
 public class DBTestController {
 
