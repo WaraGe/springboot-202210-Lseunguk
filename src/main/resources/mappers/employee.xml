@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.study.springboot202210Lseunguk.repository.EmployeeRepository">
+    <insert id="saveEmp" parameterType="com.study.springboot202210Lseunguk.web.dto.EmpDto"
+            useGeneratedKeys="true" keyProperty="empId">
+        insert into emp_mst
+        values (0, #{empName}, #{empAge}, #{empPhone})
+    </insert>
+    <select id="getEmp" parameterType="integer" resultType="com.study.springboot202210Lseunguk.web.dto.EmpDto">
+        select
+            emp_id as empId,
+            emp_name as empName,
+            emp_age as empAge,
+            emp_phone as empPhone
+        from
+            emp_mst
+        where
+            emp_id = #{empId};
+    </select>
+</mapper>
