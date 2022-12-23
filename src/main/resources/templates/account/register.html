@@ -50,6 +50,10 @@
       .register-text:focus {
         box-shadow: 0px 0px 10px 1px black;
       }
+
+      .success {
+        border: 3px solid #00dd4d;
+      }
       
       .error-msg {
         color: rgb(255, 73, 23);
@@ -109,6 +113,8 @@
       <button class="register-button">회원가입</button>
     </div>
     <script>
+      // 스크립트의 순서 (포이스팅) > 
+      // 함수의 정의가 우선(class) 문서가 준비가 되면 > window.onload
       class RegisterApi {
         static #instance = null;
         static getInstance() {
@@ -136,42 +142,45 @@
         }
 
         duplicateUsername(username) {
+          const usernameInput = document.querySelectorAll(".register-text")[0];
+          const usernameError = document.querySelectorAll('.error-msg')[0];
           $.ajax({
             async: false,
-            type: "get",
+            type: "get", //database에서 조회하기때문에 get요청
             url: "/api/account/username",
-            contentType: "application/json",
-            data: JSON.stringify({"username": username}),
+            data: {"username": username}, // QueryString형식으로 데이터가 전달됨(?username= ???)
             dataType: "json",
             success: (response) => {
-              
+              usernameInput.classList.add('success');
+              usernameError.textContent = ""; //성공하면 비워주기때문에 문자열(쌍따움표)로 묶어줌
             },
             error: (errorResponse) => {
-
+              console.log(errorResponse); 
+              usernameInput.classList.remove('success');
+              usernameError.textContent = errorResponse.responseJSON.data.duplicate;
             }
           });
         }
       }
 
       class RegisterService {
-        static #instance = null;
+        static #instance = null; // # = private
         static getInstance() {
           if(this.#instance == null) {
-            this.#instance = new RegisterService();
+            this.#instance = new RegisterService(); // 자기자신의 싱글톤을 생성해서 가지고, 다시한번 값이 들어온다면 null이 아니기때문에 그값을 그대로 return
           }
           return this.#instance;
       }
       addEventToUsernameInput() {
-        const usernameInput = document.querySelectorAll('.register-text')[0];
+        const usernameInput = document.querySelectorAll('.register-text')[0]; //.register-text[0]번에 있는 박스에 있는 (username)
         usernameInput.onblur = () => {
-          alert("중복확인 요청");
-          RegisterApi.getInstance().duplicateUsername(usernameInput.value);
+          RegisterApi.getInstance().duplicateUsername(usernameInput.value); //호출을 할때 usernameInput에 들어가있는 value값을 매게변수로 전달
         }
       }
     }
-
+    // window.onload(); 가 함수호출
     window.onload = () => {
-      RegisterService.getInstance().addEventToUsernameInput();
+      RegisterService.getInstance().addEventToUsernameInput(); //getInstance를 바로 사용한 이유는 static이기 때문
       // const btn = document.querySelector('.register-button');
     }
     </script>
