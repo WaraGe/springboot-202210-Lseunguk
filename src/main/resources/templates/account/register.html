@@ -83,7 +83,7 @@
       <h1 class="register-title">회원가입</h1>
 
       <div class="register-inputs">
-        <input type="text" class="register-text" placeholder="사용자 이름 입력">
+        <input type="text" class="register-text" placeholder="사용자 아이디 입력">
         <div class="error-msg">
           
         </div>
@@ -97,14 +97,14 @@
       </div>
 
       <div class="register-inputs">
-        <input type="text" class="register-text" placeholder="ID 입력">
+        <input type="text" class="register-text" placeholder="사용자 이름 입력">
         <div class="error-msg">
 
         </div>
       </div>
 
       <div class="register-inputs">
-        <input type="text" class="register-text" placeholder="이메일 입력">
+        <input type="text" class="register-text" placeholder="사용자 이메일 입력">
         <div class="error-msg">
 
         </div>
@@ -133,10 +133,10 @@
             data: JSON.stringify(user),
             dataType: "json",
             success: (response) => {
-              
+              console.log(response);
             },
             error: (errorResponse) => {
-
+              console.log(errorResponse);
             }
           });
         }
@@ -157,7 +157,7 @@
             error: (errorResponse) => {
               console.log(errorResponse); 
               usernameInput.classList.remove('success');
-              usernameError.textContent = errorResponse.responseJSON.data.duplicate;
+              usernameError.innerHTML = errorResponse.responseJSON.data.username;
             }
           });
         }
@@ -177,10 +177,26 @@
           RegisterApi.getInstance().duplicateUsername(usernameInput.value); //호출을 할때 usernameInput에 들어가있는 value값을 매게변수로 전달
         }
       }
+
+      // 회원가입 버튼을 클릭했을때 동작
+      addEventToRegisterButton() {
+          const registerButton = document.querySelector(".register-button");
+          registerButton.onclick = () => {
+            const registerInputs = document.querySelectorAll(".register-text"); 
+            const user = {
+              username: registerInputs[0].value,
+              password: registerInputs[1].value,
+              name: registerInputs[2].value,
+              email: registerInputs[3].value
+            }
+            RegisterApi.getInstance().registrationUser(user);
+          }
+      }
     }
     // window.onload(); 가 함수호출
     window.onload = () => {
       RegisterService.getInstance().addEventToUsernameInput(); //getInstance를 바로 사용한 이유는 static이기 때문
+      RegisterService.getInstance().addEventToRegisterButton();
       // const btn = document.querySelector('.register-button');
     }
     </script>

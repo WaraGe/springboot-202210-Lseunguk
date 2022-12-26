@@ -30,7 +30,7 @@ public class UserService {
         UserDto userDto = userRepository.findUserByUsername(username); // 아이디를 찾지 못한다면 null값 리턴 == 가입이 가능함
         if(userDto != null) {
             Map<String, String> errorMap = new HashMap<>();
-            errorMap.put("duplicate", "이미 존재하는 사용자 이름입니다"); // key, value값을 전달해야 하기때문에 앞의값은 duplicate
+            errorMap.put("username", "이미 존재하는 사용자 아이디 입니다"); // key, value값을 전달해야 하기때문에 앞의값은 duplicate
             throw new CustomDuplicateUsernameException("Duplicate username!!", errorMap); // (에러 메시지, errorMap도 생성)
         }
     }
