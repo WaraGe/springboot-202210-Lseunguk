@@ -123,8 +123,9 @@
           }
           return this.#instance;
         }
-        // ajax
+
         registrationUser(user) {
+          const errorMsgs = document.querySelectorAll(".error-msg");
           $.ajax({
             async: false,
             type: "post",
@@ -134,9 +135,31 @@
             dataType: "json",
             success: (response) => {
               console.log(response);
+
+              errorMsgs.forEach(errorMsg => {
+                errorMsg.textContent = "";
+              });
+              
             },
             error: (errorResponse) => {
               console.log(errorResponse);
+              const errorMap = errorResponse.responseJSON.data;
+
+              errorMsgs.forEach(errorMsg => {
+                errorMsg.textContent = "";
+              });
+
+              Object.keys(errorMap).forEach(key => {
+                if(key == "username") {
+                  errorMsgs[0].textContent = errorMap[key];
+                }else if(key == "password") {
+                  errorMsgs[1].textContent = errorMap[key];
+                }else if(key == "name") {
+                  errorMsgs[2].textContent = errorMap[key];
+                }else if(key == "email") {
+                  errorMsgs[3].textContent = errorMap[key];
+                }
+              }); 
             }
           });
         }
@@ -144,6 +167,7 @@
         duplicateUsername(username) {
           const usernameInput = document.querySelectorAll(".register-text")[0];
           const usernameError = document.querySelectorAll('.error-msg')[0];
+
           $.ajax({
             async: false,
             type: "get", //database에서 조회하기때문에 get요청
@@ -184,7 +208,7 @@
           registerButton.onclick = () => {
             const registerInputs = document.querySelectorAll(".register-text"); 
             const user = {
-              username: registerInputs[0].value,
+              username: registerInputs[0].value, //UserDto와 일치해야 함 (값)
               password: registerInputs[1].value,
               name: registerInputs[2].value,
               email: registerInputs[3].value

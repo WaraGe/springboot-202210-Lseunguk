@@ -8,14 +8,18 @@
 </head>
 <body>
   <script>
-    const test = () => {
-      alert("test");
-    }
-
-    const abc = test;
-
-    test();
-    abc();
+      const user = {
+        username: "test",
+        password: "1234",
+        name: "김준일"
+      }
+      console.log(Object.keys(user)[1]); //object로 Array배열로 만들어서 키값 불러오기
+      // console.log(user[Object.keys(user)[0]]);
+      // Object.keys(user).forEach(key => {
+      //   console.log(key)
+      //   console.log([keys(user)])
+      // })
+    
   </script>
 </body>
 </html>
