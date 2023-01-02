@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Retention(RetentionPolicy.RUNTIME) // Runtime시점에 사용을 하기 위하여 작성
 @Target({ElementType.TYPE, ElementType.METHOD}) // class,  method위에다가 작성이 가능하게 만들기 위하여 작성
-public @interface PrintTestAspect {
+public @interface ParamsAspect {
 
 }

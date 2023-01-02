@@ -14,14 +14,21 @@ import java.util.Map;
 @Aspect
 @Component
 public class ValidationAop {
-    //          *은 모든 자료형을 반환      밑에 경로에 있는 모든 클래스 파일의 메소드를 가져옴
+    //                   *은 모든 자료형을 반환   경로 이후에 있는 모든 클래스 파일의 매개변수가 하나라도 있는 모든 매개변수의 메소드를 가져옴
     @Pointcut("execution(* com.study.springboot202210Lseunguk.web.controller.account.AccountApiController.*(..))")
     //ex) @Pointcut("execution(* com.study.springboot202210Lseunguk.web.controller..*.*(..))") controller의 하위 모든 클래스의 모든 메소드를 허용한다
     private void executionPointCut() {}
 
-    @Around("executionPointCut()") // 값 비교를 전, 후 둘다 한다
+    @Pointcut("@annotation(com.study.springboot202210Lseunguk.aop.annotation.ValidAspect)")
+    private void annotationPointCut() {}
+
+    @Around("annotationPointCut()") // 값 비교를 전, 후 둘다 한다
     public Object around(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+                                            //proceedingJoinPoint의 메소드 정보들이 들어가
         Object[] args = proceedingJoinPoint.getArgs();
+        for(Object arg : args) {
+            System.out.println(arg);
+        }
 
         System.out.println("AOP 작동");
 
@@ -39,9 +46,6 @@ public class ValidationAop {
                 Map<String, String> errorMap = new HashMap<>();
                 bindingResult.getFieldErrors().forEach(error -> {
                     errorMap.put(error.getField(), error.getDefaultMessage());
-                });
-                errorMap.forEach((k,v) -> {
-                    System.out.println(k + ": " + v);
                 });
 
                 throw new CustomValidException(errorMap);
